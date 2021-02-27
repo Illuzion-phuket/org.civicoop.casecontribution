@@ -22,14 +22,16 @@ class CRM_Casecontribution_Page_CaseTab {
     $template = CRM_Core_Smarty::singleton();
     $contributions = array();
     $qfKey = CRM_Utils_Request::retrieve('key', 'String', CRM_Core_DAO::$_nullObject);
-
-    $permissions = array(CRM_Core_Permission::VIEW);
-    if (CRM_Core_Permission::check('edit contributions')) {
-      $permissions[] = CRM_Core_Permission::EDIT;
-      $template->assign('allowed_to_add_contribution', true);
-    }
-    if (CRM_Core_Permission::check('delete in CiviContribute')) {
-      $permissions[] = CRM_Core_Permission::DELETE;
+    
+    if (CRM_Core_Permission::check('access contributions')) {
+      $permissions = array(CRM_Core_Permission::VIEW);
+      if (CRM_Core_Permission::check('edit contributions')) {
+        $permissions[] = CRM_Core_Permission::EDIT;
+        $template->assign('allowed_to_add_contribution', true);
+      }
+      if (CRM_Core_Permission::check('delete in CiviContribute')) {
+        $permissions[] = CRM_Core_Permission::DELETE;
+      }
     }
     $mask = CRM_Core_Action::mask($permissions);
 
